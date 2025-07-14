@@ -1,0 +1,18 @@
+package com.example.webapp.service;
+
+import java.util.List;
+
+import com.example.webapp.entity.Student;
+import com.example.webapp.form.DayForm;
+import com.example.webapp.view.StudentPersonalInfoView;
+
+public interface StudentDayService {
+	
+	List<StudentPersonalInfoView> findByIdStudent(Integer studentId);
+	
+	public Student findByIdNewStudent(Integer studentId);
+	
+	void insertDay(DayForm form);
+	
+	void updateDay(DayForm form);
+}

@@ -1,0 +1,11 @@
+package com.example.webapp.repository;
+
+import java.util.List;
+
+import com.example.webapp.view.SubjectView;
+
+public interface TextBookMapper {
+	
+	List<SubjectView> selectTextBookById(Integer id);
+
+}

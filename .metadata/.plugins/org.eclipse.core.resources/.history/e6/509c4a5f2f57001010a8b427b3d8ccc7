@@ -1,0 +1,31 @@
+package com.example.webapp.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.example.webapp.form.StudentForm;
+import com.example.webapp.service.SubjectService;
+
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequestMapping("subjects")
+@RequiredArgsConstructor
+public class SubjectController {
+	private final SubjectService subjectService;
+	
+	@GetMapping
+	public String subjectlist(Model model) {
+		model.addAttribute("subjects",subjectService.findAllSubject());
+		return "student/subject";
+	}
+	
+	@GetMapping("/form")
+	public String newStudent(@ModelAttribute SubjectForm form) {
+		form.setIsNew(true);
+		return "student/studentform";
+	}
+}

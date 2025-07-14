@@ -1,0 +1,25 @@
+package com.example.webapp.service.impl;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.webapp.repository.TextBookMapper;
+import com.example.webapp.service.TextBookService;
+import com.example.webapp.view.TextBookView;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class TextBookServiceImp implements TextBookService {
+	private final TextBookMapper textBookMapper;
+	
+	@Override
+	public List<TextBookView> findAllTextbook(Integer id){
+		textBookMapper.selectTextBookById(id);
+	}
+
+}

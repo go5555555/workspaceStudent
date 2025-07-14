@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>参考書一覧</title>
+</head>
+
+<body>
+	<h2>参考書一覧</h2>
+	<table border="3">
+		<h3 th:text="${subject.subjectName}"></h3>
+	</table>
+	<table border="1" width="600">
+		<thead>
+			<tr>
+				<th>参考書番号</th>
+				<th>参考書タイトル</th>
+				<th>参考書名編集</th>
+				<th>参考書削除</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:if=${textbooks} th:each="tex : ${textbooks}">
+				<td th:text="${tex.id}"></td>
+				<td th:text="${tex.title}"></td>
+				<td>
+					<a th:href="@{/textbooks/form/{id}(id=${tex.id},oldTitle=${tex.title},subjectId = ${subject.id},subjectName = ${subject.subjectName})}" th:text="編集"></a>
+				</td>
+				<td>
+					<a th:href="@{/textbooks/delete(id=${tex.id},subjectId = ${subject.id})}" th:text="削除"></a>
+				</td>
+			</tr>
+			<tr th:unless=${textbooks}>
+				<td colspan="4" style="text-align: center;">参考書の登録がありません</td>
+			</tr>
+			<p th:if="${message}" th:text="${message}" style="color: red">
+		</tbody>
+	</table>
+	<a th:href="@{/textbooks/form(subjectId = ${subject.id},subjectName = ${subject.subjectName})}"
+		th:text="${subject.subjectName}+ の参考書を追加"></a>
+	<a th:href="@{/subjects}">科目一覧へ戻る</a>
+	<a th:href="@{/students}">生徒一覧へ戻る</a>
+</body>
+
+</html>

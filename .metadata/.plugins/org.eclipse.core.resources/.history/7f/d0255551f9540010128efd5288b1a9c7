@@ -1,0 +1,14 @@
+package com.example.webapp.helper;
+
+import com.example.webapp.form.StudyDetailForm;
+
+public class StudyDayHelper {
+	public void sanitizeForm(StudyDetailForm form) {
+		if (form.getPages() == null || form.getPages().isEmpty()) {
+			form.setPages(null);
+		}
+		if (form.getMemo() == null || form.getMemo().isEmpty()) {
+			form.setMemo(null);
+		}
+	}
+}

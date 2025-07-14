@@ -1,0 +1,26 @@
+package com.example.webapp.helper;
+
+import org.springframework.stereotype.Component;
+
+import com.example.webapp.service.SubjectService;
+
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
+public class SubjectHelper {
+	final private SubjectService subjectService;
+	
+	public boolean orMatch() {
+		return  subjectService.findAllSubject().stream().anyMatch(f -> f.getSubjectName().equals(form.getSubjectName());
+	}
+	
+
+	
+//	for (Subject f : subjectService.findAllSubject()) {
+//		if (f.getSubjectName().equals(form.getSubjectName())) {
+//			form.setIsNewSub(true);
+//			attributes.addFlashAttribute("errorMessage", "既に登録済みの教科です");
+//			return "redirect:/subjects/form";
+//		}
+}

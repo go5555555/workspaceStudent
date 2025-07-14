@@ -1,0 +1,132 @@
+package com.example.webapp.controller;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.example.webapp.entity.Textbook;
+import com.example.webapp.form.StudentForm;
+import com.example.webapp.form.StudyDetailForm;
+import com.example.webapp.helper.StudyDetailHelper;
+import com.example.webapp.service.StudyDetailService;
+
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequestMapping("/details")
+@RequiredArgsConstructor
+public class StudyDetailController {
+	//DIしてる
+	private final StudyDetailService studyDetailService;
+	private final StudyDetailHelper studyDetailHelper;
+
+	//フォームはオブジェクトを引数にして、IDとかを受け取り、エンティティにGETで渡す
+	//フォームを介さないで id と studyDay　を送ってる
+	@GetMapping("")
+	public String training(@RequestParam Integer studentId,
+			@RequestParam LocalDate studyDay,
+			Model model,
+			RedirectAttributes attributes) {
+		studyDetailHelper.trainingdetail(studentId, studyDay, model, attributes);
+		return "student/training";
+	}
+
+	//学習内容登録画面への遷移
+	@GetMapping("/form")
+	public String newDetail(@ModelAttribute StudyDetailForm form,
+			Model model) {
+		form.setIsNewDetail(true);
+		studyDetailHelper.toDetailForm(model);
+		return "student/detailform";
+	}
+
+	//科目IDから参考書一覧を取得する。JavaScriptで使って
+	@GetMapping("/textbooks")
+	@ResponseBody
+	public List<Textbook> getTextbooks(@RequestParam("id") Integer subjectId) {
+		return studyDetailService.findTextBook(subjectId);
+	}
+
+	@PostMapping("/studysave")
+	public String create(@Validated StudyDetailForm form, Model model, BindingResult bindingResult,
+			RedirectAttributes attributes) {
+		if (bindingResult.hasErrors()) {
+			form.setIsNewDetail(true);
+			attributes.addFlashAttribute("message", "更新できませんでした");
+			return "redirect:/detailform";
+		}
+		try {
+			studyDetailService.insertStudyDetail(form);
+			studyDetailHelper.trainingdetail(form.getStudentId(), form.getStudyDay(), model, attributes);
+			model.addAttribute("message", "新しい学習内容を記録しました");
+			return "student/training";
+		} catch (Exception e) {
+			form.setIsNewDetail(true);
+			studyDetailHelper.toDetailForm(model);
+			model.addAttribute("message", "この生徒の日付・教科・参考書は既に登録済みの組み合わせです");
+			return "student/detailform";
+		}
+
+	}
+	
+	//学習内容更新画面への遷移
+	@GetMapping("/form/{studentId}")
+	public String changeDetail(@ModelAttribute StudyDetailForm form,
+			Model model) {
+		form.setIsNewDetail(false);
+		studyDetailHelper.toDetailForm(model);
+		return "student/detailform";
+	}
+	
+	@PostMapping("/studyupdate")
+	public String updateDetail(@Validated StudyDetailForm form, Model model, BindingResult bindingResult,
+			RedirectAttributes attributes) {
+		if (bindingResult.hasErrors()) {
+			form.setIsNewDetail(false);
+			attributes.addFlashAttribute("message", "更新できませんでした");
+			return "redirect:/detailform";
+		}
+		try {
+			studyDetailHelper.sanitizeForm(form);
+			studyDetailService.updateStudyDetail(form);
+			studyDetailHelper.trainingdetail(form.getStudentId(), form.getStudyDay(), model, attributes);
+			model.addAttribute("message", "新しい学習内容を更新しました");
+			return "student/training";
+		} 
+		catch (Exception e) {
+			form.setIsNewDetail(false);
+			studyDetailHelper.toDetailForm(model);
+			model.addAttribute("message", "この生徒の日付・教科・参考書は既に登録済みの組み合わせです");
+			return "student/detailform";
+		}
+		
+//		//生徒情報削除の確認画面へ遷移
+//		@GetMapping("/reallydelete/{id}")
+//		public String reallyDeleteStudent(@ModelAttribute StudentForm form
+//									,Model model) { 
+//			model.addAttribute("student",studentService.findOneService(form.getId()));
+//			return "student/reallydeletestudent";
+//		}
+	//formで受け取りvalidetedしてerrorがなければぬける
+		@GetMapping("/delete/{textBookId}")
+		public String deleteDetail(Integer textBookId
+				,RedirectAttributes attributes) {
+			studyDetailService.deleteDetail(textBookId);
+			attributes.addFlashAttribute("message","生徒情報を削除しました");
+			return "redirect:/students";
+			}
+
+	//}
+
+}

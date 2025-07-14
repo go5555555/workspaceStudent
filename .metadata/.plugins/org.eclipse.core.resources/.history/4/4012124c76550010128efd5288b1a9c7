@@ -1,0 +1,25 @@
+package com.example.webapp.service.impl;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.webapp.helper.StudentHelper;
+import com.example.webapp.repository.StudentMapper;
+import com.example.webapp.repository.SubjectMapper;
+import com.example.webapp.service.SubjectService;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class SubjectServiceImp implements SubjectService{
+	private final SubjectMapper subjectMapper;
+
+	@Override
+	List<Subject> findAllSubject(){
+		subjectMapper.selectAllSub();
+	}
+}

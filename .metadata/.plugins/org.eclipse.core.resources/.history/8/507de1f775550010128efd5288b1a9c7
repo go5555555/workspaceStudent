@@ -1,0 +1,12 @@
+package com.example.webapp.service.impl;
+
+import java.util.List;
+
+public class SubjectServiceImp {
+	private final SubjectMapper subjectMapper;
+
+	@Override
+	List<Subject> findAllSubject(){
+		subjectMapper.selectAllSub();
+	}
+}

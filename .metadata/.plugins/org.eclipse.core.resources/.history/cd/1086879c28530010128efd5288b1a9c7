@@ -1,0 +1,49 @@
+package com.example.webapp.helper;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.example.webapp.entity.Subject;
+import com.example.webapp.form.StudyDetailForm;
+import com.example.webapp.service.StudentDayService;
+import com.example.webapp.service.StudyDetailService;
+import com.example.webapp.view.StudentStudyDetailView;
+
+import lombok.RequiredArgsConstructor;
+
+
+@Component
+@RequiredArgsConstructor
+public class StudentDetailHelper {
+	private final StudyDetailService studyDetailService;
+	private final StudentDayService studentDayService;
+	
+	//training.htmlに一覧表示するメソッド
+	public void trainingdetail(Integer studentId,LocalDate studyDay,Model model
+            					,RedirectAttributes attributes) {
+		List<StudentStudyDetailView> view = studyDetailService.findByDate(studentId, studyDay);
+		model.addAttribute("student", studentDayService.findByIdStudent(studentId).get(0)); // 共通処理
+		model.addAttribute("studyDay", studyDay);
+		//CollectionUtils.isEmptyはjavaで空とnullどっちも見れるのはこのisEmptyらしい
+		//view.isEmpty(リスト型)のisEmptyは空しか見てくれない。
+		if (!CollectionUtils.isEmpty(view)) {
+		 model.addAttribute("training", view.get(0));
+		 model.addAttribute("trainings", view);
+		}
+	}
+	
+	public void newDayForm(@ModelAttribute StudyDetailForm form,Model model ) {
+		List<Subject>subject = studyDetailService.findSubject();
+		//生徒ID、生徒名、学習日をフォームで表示するためだけのメソッドを呼び出す。
+		StudentStudyDetailView view = studyDetailService.toViewFromForm(form);
+		form.setIsNewDetail(true);
+		model.addAttribute("student", view);
+		model.addAttribute("subjects", subject);
+	}
+}

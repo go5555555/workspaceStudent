@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>参考書一覧</title>
+</head>
+
+<body>
+	<h2>参考書一覧</h2>
+	<table border="3">
+		<h3 th:text="${subject}"></h3>
+	</table>
+	<table border="1" width="400">
+		<thead>
+			<tr>
+				<th>科目番号</th>
+				<th>教科書タイトル</th>
+				<th>科目名編集</th>
+				<th>科目削除</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:if=${textbooks} th:each="tex : ${textbooks}">
+				<td th:text="${tex.id}"></td>
+				<td th:text="${tex.title}"></td>
+				<td>
+					<a th:href="@{/textbooks/form/{id}(id=${tex.id})}" th:text="編集"></a>
+				</td>
+				<td>
+					<a th:href="@{/textbooks/reallydelete/{id}(id=${tex.id})}" th:text="削除"></a>
+				</td>
+			</tr>
+			<tr th:unless=${textbooks}>
+				<td>未登録</td>
+			</tr>
+			<p th:if="${message}" th:text="${message}" style="color: red">
+		</tbody>
+	</table>
+	<a th:href="@{/textbooks/form}" th:text="${subjectName}+ の参考書を追加"></a>
+	<a th:href="@{/subjects}">科目一覧へ戻る</a>
+	<a th:href="@{/students}">生徒一覧へ戻る</a>
+</body>
+
+</html>

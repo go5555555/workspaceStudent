@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>指導詳細</title>
+</head>
+
+<body>
+	<h2>指導詳細</h2>
+	<table border="1">
+		<tr>
+			<th>ID</th>
+			<th>名前</th>
+			<th>学年</th>
+		</tr>
+		<tr>
+			<td th:text="${student.id}"></td>
+			<td th:text="${student.studentName}"></td>
+			<td th:switch="${student.grade}">
+				<span th:case="5">小５</span>
+				<span th:case="6">小６</span>
+				<span th:case="7">中１</span>
+				<span th:case="8">中２</span>
+				<span th:case="9">中３</span>
+				<span th:case="10">高１</span>
+				<span th:case="11">高２</span>
+				<span th:case="12">高３</span>
+			</td>
+		</tr>
+	</table>
+	<h3>学習記録</h3>
+	<table border="5">
+		<tr>
+			<th>学習日</th>
+			<td th:text="${studyDay}"></td>
+			<td>
+				<a th:href = "@{/days/form(studentId=${student.id},studentName=${student.studentName})}">学習日編集</a>
+			</td>
+		</tr>
+	</table>
+	<table border="1">
+		<tr>
+			<th>教科</th>
+			<th>参考書</th>
+			<th>勉強したページ</th>
+			<th>メモ</th>
+			<th>学習内容編集</th>
+			<th>学習内容削除</th>
+		</tr>
+		<!-- データが空の場合：1行だけ「---」を表示 
+		thymeleafのisEmptyは空とnullどっちも見てくれる-->
+		<tr th:if="${#lists.isEmpty(trainings)}">
+			<td colspan="6" style="text-align: center;">---（データなし）---</td>
+		</tr>
+		<!-- データがある場合：eachでループ -->
+		<tr th:each="tr : ${trainings}">
+			<td th:text="${tr.subjectName}?:'---'"></td>
+			<td th:text="${tr.title}?:'---'"></td>
+			<td th:text="${#strings.isEmpty(tr.pages) ? '---' : tr.pages}"></td>
+			<td th:text="${#strings.isEmpty(tr.memo) ? '---' : tr.memo}"></td>
+			<td>
+				<a th:href="@{/details/form/{studentId}(studentId=${student.id}
+								,studentName=${student.studentName}
+								,studyDay=${#temporals.format(studyDay, 'yyyy-MM-dd')}
+								,oldTextBookId=${tr.textBookId}
+								)}">編集</a>
+			</td>
+			<td>
+				<a th:href="@{/details/delete(studentId=${student.id}
+								,studyDay=${#temporals.format(studyDay, 'yyyy-MM-dd')}
+								,textBookId=${training.textBookId})}">削除</a>
+			</td>
+		</tr>
+		<p th:if="${message}" th:text="${message}" style="color: red">
+	</table>
+	<a th:href="@{/days/{id}(id=${student.id})}">生徒詳細に戻る</a>
+	<a th:href="@{/students}">生徒一覧</a>
+	<a th:href="@{/details/form(studentId=${student.id},
+						studentName=${student.studentName},
+						studyDay=${#temporals.format(studyDay, 'yyyy-MM-dd')})}">新規学習内容登録</a>
+</body>
+
+</html>

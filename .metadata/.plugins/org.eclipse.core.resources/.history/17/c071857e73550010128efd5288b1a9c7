@@ -1,0 +1,6 @@
+package com.example.webapp.repository;
+
+@Mapper
+public class SubjectServiceMapper {
+
+}

@@ -1,0 +1,30 @@
+package com.example.webapp.entity;
+
+import java.time.LocalDate;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class StudyDetail {
+	
+	private Integer id;
+	
+	private Integer studentId;
+	
+	private Integer textBookId;
+	
+	private Integer oldTextBookId;
+	//複数登録したい
+	//private List<LocalDate> training_date;
+	private LocalDate studyDay;
+	//複数登録したい
+	//private List<String> subject;
+	private String pages;
+	
+	private String memo; 
+
+}

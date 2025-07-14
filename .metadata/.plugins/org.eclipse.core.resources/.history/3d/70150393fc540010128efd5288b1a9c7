@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>生徒フォーム</title>
+</head>
+<body>
+	<h2 th:if="${dayForm.isNewDay}">日付登録</h2>
+	<h2 th:unless="${dayForm.isNewDay}">日付編集</h2>
+	
+	<form th:action="${dayForm.isNewDay}? @{/days/save}:@{/days/update}"
+		th:object="${dayForm}" method="post">
+		<input type="hidden" th:field="*{studentId}">
+		<table>
+			<tr>
+				<th>生徒名</th>
+				<td th:text="*{studentName}"></td>
+				<input type="hidden" th:field="*{studentName}">
+			</tr>
+			<tr th:unless="*{isNewDay}">
+				<th>更新する日付</th>
+				<td  th:text="*{oldStudyDay}"></td>
+				<input type="hidden" th:field="*{oldStudyDay}">
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<th>学習日</th>
+				<td>
+					<input type="date" th:field="*{studyDay}" />
+						<span th:if="${#fields.hasErrors('studyDay')}"
+							th:errors="*{studyDay}" style="color:red">
+						</span>
+				</td>
+			</tr>
+			<p 	th:if ="${message}"
+				th:text="${message}" style ="color: red">
+		</table>
+		<input th:if="${dayForm.isNewDay}" type="submit" value="登録">
+		<input th:unless="${dayForm.isNewDay}" type="submit" value="更新">
+	</form>
+	<a th:href="@{/details(studentId=${dayForm.studentId},studyDay=${dayForm.studyId})}">戻る</a>	
+</body>
+</html>

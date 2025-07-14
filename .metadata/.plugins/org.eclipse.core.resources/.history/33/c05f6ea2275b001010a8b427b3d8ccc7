@@ -1,0 +1,106 @@
+package com.example.webapp.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.example.webapp.form.SubjectForm;
+import com.example.webapp.form.TextbookForm;
+import com.example.webapp.helper.TextbookHelper;
+import com.example.webapp.service.TextbookService;
+
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequestMapping("textbooks")
+@RequiredArgsConstructor
+public class TextbookController {
+	private final TextbookService textbookService; 
+	private final TextbookHelper textbookHelper;
+	
+	@GetMapping("/{id}")
+	public String textBookList(@PathVariable Integer id
+			,Model model) {
+		textbookHelper.textBookList(id,model);
+		return "subject/textbook";
+	}
+	
+	@GetMapping("/form")
+	public String newSubject(@ModelAttribute TextbookForm form) {
+		form.setIsNewText(true);
+		return "subject/form/textbookform";
+	}
+
+	@PostMapping("/save")
+	public String createSubject(@Validated @ModelAttribute TextbookForm form,
+			Model model,
+			BindingResult bindingResult,
+			RedirectAttributes attributes) {
+		if (bindingResult.hasErrors() || form.getTitle().isEmpty()) {
+			textbookHelper.formRedirectView(form,attributes);
+			attributes.addFlashAttribute("errorMessage", "参考書を追加できません");
+			return "redirect:/textbooks/form";
+		}
+
+		//既に登録済みの科目名の場合の処理
+		if (textbookHelper.orMatch(form)) {
+			textbookHelper.formRedirectView(form,attributes);
+			attributes.addFlashAttribute("errorMessage", "既に登録済みの参考書です");
+			return "redirect:/textbooks/form";
+		}
+
+		//formをentityに保存するためのメソッドを呼ぶ
+		textbookService.insertTextbook(form);
+		attributes.addFlashAttribute("message", "新しい参考書が登録されました");
+		return "redirect:/textbooks/" + form.getSubjectId();
+	}
+
+	//科目名を更新するための画面へ遷移
+	@GetMapping("/form/{id}")
+	public String changeSubject(@ModelAttribute TextbookForm form, Model model) {
+		form.setIsNewText(false);
+		model.addAttribute("subjectForm", form);
+		return "subject/form/textbookform";
+	}
+
+	//formで受け取りvalidetedしてerrorがなければぬける
+	@PostMapping("/update")
+	public String updateStudent(@Validated SubjectForm form, Model model, BindingResult bindingResult,
+			RedirectAttributes attributes) {
+		if (bindingResult.hasErrors() || form.getSubjectName().isEmpty()) {
+			attributes.addFlashAttribute("errorMessage", "更新されてません");
+			return "redirect:/subjects/form/" + form.getId();
+		}
+
+		if (subjectHelper.orMatch(form)) {
+			attributes.addFlashAttribute("errorMessage", "既に登録済みの教科名です");
+			return "redirect:/subjects/form/" + form.getId();
+		}
+		//整形したデータを送って更新。DBでnullだった場合は更新しない処理にしてる
+		subjectService.updateSubject(form);
+		model.addAttribute("subjects", subjectService.findAllSubject());
+		attributes.addFlashAttribute("message", "科目名を更新しました");
+		return "redirect:/subjects";
+	}
+
+//	//科目情報削除の確認画面へ遷移
+//	@GetMapping("/reallydelete/{id}")
+//	public String reallyDeleteStudent(@ModelAttribute SubjectForm form) {
+//		return "subject/reallydeletesubject";
+//	}
+//
+//	//formで受け取りvalidetedしてerrorがなければぬける
+//	@GetMapping("/delete")
+//	public String deleteSubject(Integer id, RedirectAttributes attributes) {
+//		subjectService.deleteSubject(id);
+//		attributes.addFlashAttribute("message", "科目を削除しました");
+//		return "redirect:/subjects";
+//	}
+}

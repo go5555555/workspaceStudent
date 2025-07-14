@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.webapp.repository.StudyDetailMapper">
+	<select id="selectByDate" resultType="com.example.webapp.view.StudentStudyDetailView">
+	    SELECT 
+	    	sd.study_day AS studyDay,
+	        sub.subject_name AS subjectName,
+	        tex.title,
+	        sd.pages,
+	        sd.memo
+		FROM study_details sd
+		INNER JOIN students s ON sd.student_id = s.id
+		INNER JOIN textbooks tex ON sd.textbook_id = tex.id
+		INNER JOIN subjects sub ON sub.id = tex.subject_id
+	    WHERE s.id = #{id} AND sd.study_day = CAST(#{studyDay} AS DATE)
+	</select>
+	
+	<select id="selectSubject" resultType="com.example.webapp.entity.Subject">
+	    SELECT id,subject_name as subjectName
+		FROM subjects
+	</select>
+	
+	<select id="selectTextBook" resultType="com.example.webapp.entity.Textbook">
+	    SELECT id,title,subject_id
+	    FROM textbooks
+		WHERE subject_id = #{subjectId};
+	</select>
+	
+	<insert id = "insertSD">
+		insert into study_details(student_id,study_day,textbook_id,pages,memo)
+		values(#{studentId},#{studyDay},#{textBookId},#{pages},#{memo})
+	</insert>
+	<update id="updateSD" parameterType="com.example.webapp.entity.StudyDetail">
+		  UPDATE studydetails
+		  <set>
+		    <if test="studentName != null">
+		      student_name = #{studentName},
+		    </if>
+		    <if test="grade != null">
+		      grade = #{grade},
+		    </if>
+		  </set>
+		  WHERE id = #{id}
+	</update>
+</mapper>

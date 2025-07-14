@@ -1,0 +1,21 @@
+package com.example.webapp.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequestMapping("textbooks")
+@RequiredArgsConstructor
+public class TextBookController {
+	
+	@GetMapping("/{id}")
+	public String textBooklist(Model model) {
+		model.addAttribute("textbooks",subjectService.findAllTextbook());
+		return "student/textbook";
+	}
+
+}

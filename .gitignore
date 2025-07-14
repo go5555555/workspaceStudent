@@ -1,0 +1,29 @@
+# ビルド成果物
+target/
+build/
+
+# IDEの設定ファイル（使っているIDEに合わせて変える）
+.idea/
+*.iml
+.vscode/
+
+# コンパイルされたクラスファイル
+*.class
+
+# ログファイル
+*.log
+
+# OS固有ファイル
+.DS_Store
+Thumbs.db
+
+# 一時ファイルやキャッシュ
+*.tmp
+*.temp
+*.swp
+
+# Mavenのローカルリポジトリ（普通は不要）
+/.mvn/
+
+# Spring Bootのランタイム生成ファイル
+spring.log

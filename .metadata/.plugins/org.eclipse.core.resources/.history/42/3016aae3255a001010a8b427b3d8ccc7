@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>削除してもよいのか？</title>
+</head>
+<body>
+	<h2 >科目情報削除　確認画面</h2>
+	<form th:action= "@{/subjects/delete}">
+		<input type="hidden" th:field="${student.id}">
+		<table border="1">
+			<tr>
+				<th>削除する科目名</th>
+				<td th:text ="${subjectForm.subjectName}"></td>
+			</tr>
+			<p style ="color: red">※科目とそれに付随して登録されてる参考書が
+				<br>　全て消えるけど大丈夫？</p>
+		</table>
+		<br>
+		<input th:href="@{/students}" type="submit" value="削除">
+	</form>
+	<a th:href="@{/students}">やっぱやめておく</a>
+</body>
+</html>

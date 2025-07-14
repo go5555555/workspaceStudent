@@ -1,0 +1,10 @@
+package com.example.webapp.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+@RequestParam("subject")
+public class SubjectController {
+
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>生徒フォーム</title>
+</head>
+<body>
+	<h2 >生徒情報削除　確認画面</h2>
+	<form th:action= "@{/students/delete}"
+		th:object="${studentForm}" method="post">
+		<input type="hidden" th:field="*{id}">
+		
+		<table border="1">
+			<tr>
+				<th>削除する生徒名</th>
+				<td th:text ="${student.studentName}"></td>
+			</tr>
+			<tr>
+				<th>学年</th>
+				<td th:switch="${student.grade}">
+					<span th:case="5">小５</span>
+					<span th:case="6">小６</span>
+					<span th:case="7">中１</span>
+					<span th:case="8">中２</span>
+					<span th:case="9">中３</span>
+					<span th:case="10">高１</span>
+					<span th:case="11">高２</span>
+					<span th:case="12">高３</span>
+				</td>
+			</tr>
+			<p style ="color: red">※以下の情報と登録されてる学習内容が
+				<br>　すべて削除されるけど大丈夫？</p>
+		</table>
+		<br>
+		<input th:href="@{/students}" type="submit" value="削除">
+	</form>
+	<a th:href="@{/students}">戻る</a>
+</body>
+</html>

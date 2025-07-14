@@ -1,0 +1,56 @@
+package com.example.webapp.service.impl;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.webapp.entity.Student;
+import com.example.webapp.entity.StudyDetail;
+import com.example.webapp.form.DayForm;
+import com.example.webapp.repository.StudentDayMapper;
+import com.example.webapp.service.StudentDayService;
+import com.example.webapp.view.StudentPersonalInfoView;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class StudentDayServiceImp implements StudentDayService {
+
+	private final StudentDayMapper studentDayMapper;
+
+	@Override
+	public List<StudentPersonalInfoView> findByIdStudent(Integer studentId) {
+		return studentDayMapper.selectById(studentId);
+	}
+
+	@Override
+	public Student findByIdNewStudent(Integer studentId) {
+		return studentDayMapper.selectByIdNew(studentId);
+	}
+
+	@Override
+	public void insertDay(DayForm form) {
+		StudyDetail entity = new StudyDetail();
+		entity.setStudentId(form.getStudentId());
+		entity.setStudyDay(form.getStudyDay());
+		studentDayMapper.insertD(entity);
+	}
+
+	@Override
+	public void updateDay(DayForm form) {
+		StudyDetail entity = new StudyDetail();
+		entity.setStudentId(form.getStudentId());
+		entity.setStudyDay(form.getStudyDay());
+		entity.setOldStudyDay(form.getOldStudyDay());
+		studentDayMapper.updateD(entity);
+	}
+	
+	@Override
+	public void deleteDay(Inteder studentId,LocalDay studyDay) {
+		
+	}
+
+}

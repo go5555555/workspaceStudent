@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>学習日情報削除最終確認</title>
+</head>
+
+<body>
+	<h2>学習日情報削除　確認画面</h2>
+	<form th:action="@{/days/delete}" th:object="${dayForm}">
+		<input type="hidden" th:field="${dayForm.studentId}">
+		<table border="1">
+			<tr>
+				<th>生徒名</th>
+				<td th:text="*{studentName}"></td>
+			</tr>
+			<tr>
+				<th>削除する学習日</th>
+				<td th:text="*{studyDay}"></td>
+				<input type="hidden" th:field="*{studyDay}">
+			</tr>
+			<p style="color: red">※この学習日に登録されてる学習内容が
+				<br>削除されるけど大丈夫？
+			</p>
+		</table>
+		<input type="submit" value="削除">
+	</form>
+	<a th:href="@{/days/{id}(id = *{studentId})}">やっぱやめておく</a>
+</body>
+
+</html>

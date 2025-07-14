@@ -1,0 +1,27 @@
+package com.example.webapp.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.example.webapp.service.TextBookService;
+
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequestMapping("textbooks")
+@RequiredArgsConstructor
+public class TextBookController {
+	private final TextBookService textBookService; 
+	
+	@GetMapping("/{id}")
+	public String textBooklist(@PathVariable Integer id,
+			Model model) {
+		model.addAttribute("textbooks",textBookService.findAllTextbook(id));
+		model.addAttribute("textbook",textBookService.findAllTextbook(id).get(0));
+		return "student/textbook";
+	}
+
+}

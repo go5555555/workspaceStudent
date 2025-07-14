@@ -1,0 +1,28 @@
+package com.example.webapp.helper;
+
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
+
+import com.example.webapp.service.TextBookService;
+import com.example.webapp.view.TextBookView;
+
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
+public class TextBookHelper {
+	private final TextBookService textBookService;
+
+	public void textBookList(Integer id, String subjectName, Model model) {
+		List<TextBookView> view = textBookService.findAllTextbook(id);
+		model.addAttribute("subject", subjectName); // 共通処理
+		//CollectionUtils.isEmptyは空とnullどっちも見れる
+		//view.isEmpty(リスト型)のisEmptyは空しか見てくれない。
+		if (!CollectionUtils.isEmpty(view)) {
+			model.addAttribute("textbooks", textBookService.findAllTextbook(id));
+		}
+	}
+}

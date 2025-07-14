@@ -1,0 +1,15 @@
+package com.example.webapp.service.impl;
+
+import java.util.List;
+
+import com.example.webapp.repository.SubjectMapper;
+import com.example.webapp.service.SubjectService;
+
+public class SubjectServiceImp implements SubjectService{
+	private final SubjectMapper subjectMapper;
+
+	@Override
+	List<Subject> findAllSubject(){
+		subjectMapper.selectAllSub();
+	}
+}

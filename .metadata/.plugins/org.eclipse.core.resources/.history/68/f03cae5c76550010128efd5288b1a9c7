@@ -1,0 +1,8 @@
+package com.example.webapp.service;
+
+import java.util.List;
+
+public interface SubjectService {
+	
+	List<Subject> findAllSubject();
+}

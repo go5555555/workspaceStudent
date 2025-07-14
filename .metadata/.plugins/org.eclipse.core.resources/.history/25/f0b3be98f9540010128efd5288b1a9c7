@@ -1,0 +1,10 @@
+package com.example.webapp.helper;
+
+import com.example.webapp.form.DayForm;
+
+public class StudyDayHelper {
+	public boolean sameCheck(DayForm form) {
+		return form.getOldStudyDay == form.getStudyDay;
+	}
+
+}
