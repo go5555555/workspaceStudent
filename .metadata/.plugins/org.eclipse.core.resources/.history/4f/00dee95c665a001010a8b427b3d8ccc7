@@ -1,6 +1,0 @@
-package com.example.webapp.helper;
-
-@Component
-public class TextBookHelper {
-
-}

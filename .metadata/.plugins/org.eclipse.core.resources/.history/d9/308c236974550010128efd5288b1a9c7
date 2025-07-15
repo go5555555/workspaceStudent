@@ -1,9 +1,0 @@
-package com.example.webapp.service;
-
-import java.util.List;
-
-import com.example.webapp.entity.Student;
-
-public class SubjectService {
-	List<Subject>findAllSubject();
-}

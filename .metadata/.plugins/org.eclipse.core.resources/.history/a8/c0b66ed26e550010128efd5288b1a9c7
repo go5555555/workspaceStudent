@@ -1,9 +1,0 @@
-package com.example.webapp.controller;
-
-import org.springframework.stereotype.Controller;
-
-@Controller
-@RequestParam("")
-public class SubjectController {
-
-}

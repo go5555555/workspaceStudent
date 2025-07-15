@@ -1,7 +1,0 @@
-package com.example.webapp.service;
-
-public interface TextBookService {
-	
-	List<SubjectView> findAllTextbook(id);
-
-}

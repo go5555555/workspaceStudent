@@ -1,8 +1,0 @@
-package com.example.webapp.helper;
-
-public class StudyDayHelper {
-	public boolean sameCheck(DayForm form) {
-		return form.getOldStudyDay == form.getStudyDay;
-	}
-
-}
