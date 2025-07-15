@@ -27,3 +27,5 @@ Thumbs.db
 
 # Spring Bootのランタイム生成ファイル
 spring.log
+
+.metadata/
