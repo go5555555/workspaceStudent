@@ -1,0 +1,22 @@
+package com.example.webapp.dto;
+
+import java.util.List;
+
+import com.example.webapp.entity.Student;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class StudentDTO {
+	
+	String message;
+	
+	List<Student>students;
+	
+	
+
+}
