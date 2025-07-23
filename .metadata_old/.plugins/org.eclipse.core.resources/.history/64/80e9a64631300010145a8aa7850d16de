@@ -1,0 +1,24 @@
+package com.example.webapp.service.impl;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.webapp.form.StudyDetailForm;
+import com.example.webapp.repository.StudentMapper;
+import com.example.webapp.repository.StudyDetailMapper;
+import com.example.webapp.service.StudyDetailService;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class StudyDetailServiceImp implements StudyDetailService {
+	
+	private final StudyDetailMapper studyDetailMapper;
+	
+	@Override
+	public void insertStudyDetail(StudyDetailForm studyDetailForm) {
+		studyDetailMapper.insertStudyDetail(studyDetailForm);
+	}
+}
