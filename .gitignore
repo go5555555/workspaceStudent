@@ -30,4 +30,10 @@ spring.log
 
 .metadata/
 
+# Eclipse関連のファイルを無視
+.classpath
+.project
+.settings/
+
+Student/.projectt
 Student/.settings/
