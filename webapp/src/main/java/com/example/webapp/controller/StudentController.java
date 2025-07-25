@@ -73,7 +73,7 @@ public class StudentController {
 			return "redirect:/students/form/"+ form.getId();
 		}
 		//更新画面で名前と学年のどちらかが未入力の場合、未入力にnullを入れる
-		studentHelper.sanitizeForm(form);
+		studentHelper.replaceEmptyFieldsWithNull(form);
 		//整形したデータを送って更新。DBでnullだった場合は更新しない処理にしてる
 		studentService.updateStudent(form);
 		model.addAttribute("students",studentService.findAllService());

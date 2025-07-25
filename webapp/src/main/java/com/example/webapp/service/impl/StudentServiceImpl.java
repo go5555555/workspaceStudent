@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.webapp.dto.StudentDTO;
 import com.example.webapp.entity.Student;
 import com.example.webapp.form.StudentForm;
 import com.example.webapp.helper.StudentHelper;
@@ -26,6 +27,13 @@ public class StudentServiceImpl implements StudentService {
 	public List<Student> findAllService() {
 		// TODO 自動生成されたメソッド・スタブ
 		return studentMapper.selectAll();
+	}
+	
+	@Override
+	public StudentDTO buildStudentListWithMessage(String message){
+		List<Student> students = studentMapper.selectAll();
+		StudentDTO sd = new StudentDTO(message, students);
+		return sd;
 	}
 
 	@Override
