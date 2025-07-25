@@ -5,8 +5,12 @@ import org.springframework.stereotype.Component;
 import com.example.webapp.entity.Student;
 import com.example.webapp.form.StudentForm;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class StudentHelper {
+
 	//生徒登録フォームを生徒エンティティに変換
 	public Student toEntityFromForm(StudentForm form) {
 		Student entity = new Student();
@@ -16,18 +20,18 @@ public class StudentHelper {
 		return entity;
 	}
 
-	public void sanitizeForm(StudentForm form) {
-		if(form.getStudentName() == null || form.getStudentName().isEmpty()) {
+	public void replaceEmptyFieldsWithNull(StudentForm form) {
+		if (form.getStudentName() == null || form.getStudentName().isEmpty()) {
 			form.setStudentName(null);
 		}
-		if(form.getGrade() == null || form.getGrade().equals(0)) {
+		if (form.getGrade() == null || form.getGrade().equals(0)) {
 			form.setGrade(null);
 		}
 	}
-	
+
 	public void inNull(StudentForm form) {
 		form.setStudentName(null);
 		form.setGrade(null);
 	}
-	
+
 }
